@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 from app.config import Configuration
 from app.models.models import db, Session
 from flask_migrate import Migrate
@@ -17,3 +17,16 @@ Migrate(app, db)
 
 @app.route('/')
 def index():
+    """ get all session """
+    sessions = Session.query.all()
+    data = [session.to_dictionary() for session in sessions]
+    return {'sessions': data}
+
+
+@app.route('/add', methods=['POST'])
+def add():
+    """ add a new session """
+    new_session = Session(**request.json)
+    db.session.add(new_session)
+    db.session.commit()
+    return {'sessions': new_session.to_dictionary()}
