@@ -13,6 +13,7 @@ class Session(db.Model):
 
     def to_dictionary(self):
         return {
+            'id': self.id,
             'name': self.name,
             'duration': self.duration
         }

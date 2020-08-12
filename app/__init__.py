@@ -30,3 +30,16 @@ def add():
     db.session.add(new_session)
     db.session.commit()
     return {'sessions': new_session.to_dictionary()}
+
+
+@app.route('/<int:id>/delete', methods=['DELETE'])
+def delete(id):
+    """ delete session """
+    session_to_delete = Session.query.get(int(id))
+
+    if session_to_delete:
+        db.session.delete(session_to_delete)
+        db.session.commit()
+        return {'message': 'Session deleted.'}
+    else:
+        return {'message': 'Session not found'}
