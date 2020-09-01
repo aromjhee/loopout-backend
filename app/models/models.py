@@ -26,5 +26,6 @@ class Session(db.Model):
         return {
             'id': self.id,
             'name': self.name,
-            'duration': self.duration
+            'duration': self.duration,
+            'user': self.user.email
         }
