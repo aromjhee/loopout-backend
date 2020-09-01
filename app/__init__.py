@@ -69,10 +69,12 @@ def register():
         if check_if_email_exists:
             return jsonify(message='The email already exists'), 400
         
-        hashedPassword = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-        print(hashedPassword)
+        # hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        hashed_password = bcrypt.hashpw(password.encode(
+            'utf-8'), bcrypt.gensalt()).decode('utf-8')
+        print(hashed_password)
         
-        new_user = User(email=email, password=hashedPassword)
+        new_user = User(email=email, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
 
@@ -95,12 +97,15 @@ def login():
 
         user = User.query.filter_by(email=email).first()
         if not user:
-            return jsonify(message='User Not Found!'), 400
-        
-        if bcrypt.checkpw(password.encole('utf-8'), user.hash):
-            access_token = create_access_token(identity=email)
+            return jsonify(message='User Not Found'), 400
+        print(password.encode('utf-8'))
+        print(user.password.encode('utf-8'))
+        if bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
+            print('===========')
+            access_token = create_access_token(identity={'email': email})
             return jsonify(access_token=access_token), 200
         else:
             return jsonify(message='Invalid Email and Password'), 400
-    except:
-        return jsonify(message='Error when logging in user'), 400
+    except Exception as e:
+        # return jsonify(message='Error when logging in user'), 400
+        return print(e)
