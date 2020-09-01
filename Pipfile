@@ -15,6 +15,7 @@ alembic = "*"
 flask-migrate = "*"
 gunicorn = "*"
 flask-cors = "*"
+flask-jwt-extended = "*"
 
 [requires]
 python_version = "3.8"
