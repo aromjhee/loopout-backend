@@ -69,7 +69,8 @@ def register():
         if check_if_email_exists:
             return jsonify(message='The email already exists'), 400
         
-        hashedPassword = bcrypt.hashpw(password.encode('utf-8', bcrypt.gensalt()))
+        hashedPassword = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        print(hashedPassword)
         
         new_user = User(email=email, password=hashedPassword)
         db.session.add(new_user)
