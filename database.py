@@ -1,4 +1,4 @@
-from app.models.models import Session
+from app.models.models import Session, User
 from app import app, db
 from dotenv import load_dotenv
 load_dotenv()
@@ -7,6 +7,11 @@ load_dotenv()
 with app.app_context():
     db.drop_all()
     db.create_all()
+
+    test_user = User(
+        email='test@test.com',
+        password='asdf'
+    )
 
     s1 = Session(
         name='cool down time',
@@ -53,5 +58,16 @@ with app.app_context():
         duration='0:10:0'
     )
 
+    s1.user = test_user
+    s2.user = test_user
+    s3.user = test_user
+    s4.user = test_user
+    s5.user = test_user
+    s6.user = test_user
+    s7.user = test_user
+    s8.user = test_user
+    s9.user = test_user
+
+    db.session.add(test_user)
     db.session.add_all([s1, s2, s3, s4, s5, s6, s7, s8, s9])
     db.session.commit()
