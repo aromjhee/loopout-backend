@@ -2,16 +2,20 @@ from app.models.models import Session, User
 from app import app, db
 from dotenv import load_dotenv
 load_dotenv()
+import bcrypt
 
 
 with app.app_context():
     db.drop_all()
     db.create_all()
 
-    test_user = User(
-        email='test@test.com',
-        password='asdf'
-    )
+    password = 'asdf'
+
+    hashed_password = bcrypt.hashpw(
+        password.encode('utf-8'), bcrypt.gensalt()
+    ).decode('utf-8')
+
+    test_user = User(email='test@test.com', password=hashed_password)
 
     s1 = Session(
         name='cool down time',
