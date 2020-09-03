@@ -91,6 +91,8 @@ def login():
 
         if not email:
             return jsonify(message='Missing email address'), 400
+        elif '@' not in email:
+            return jsonify(message='Email must include @'), 400
         if not password:
             return jsonify(message='Missing password'), 400
 
