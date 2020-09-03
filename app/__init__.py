@@ -97,7 +97,7 @@ def login():
         user = User.query.filter_by(email=email).first()
         if not user:
             return jsonify(message='User Not Found'), 400
-        print(user.email)
+
         if bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
             access_token = create_access_token(identity={'email': email})
             return jsonify(access_token=access_token), 200
