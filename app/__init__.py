@@ -21,18 +21,18 @@ Migrate(app, db)
 jwt = JWTManager(app)
 
 
-@app.route('/')
-def index():
+@app.route('/<int:id>')
+def index(id):
     """ get all session """
-    sessions = Session.query.all()
+    sessions = Session.query.filter_by(user_id=id).all()
     data = [session.to_dictionary() for session in sessions]
     return {'sessions': data}
 
 
-@app.route('/add', methods=['POST'])
-def add():
+@app.route('/<int:id>/add', methods=['POST'])
+def add(id):
     """ add a new session """
-    new_session = Session(**request.json)
+    new_session = Session(**request.json, user_id=id)
     db.session.add(new_session)
     db.session.commit()
     return {'sessions': new_session.to_dictionary()}
