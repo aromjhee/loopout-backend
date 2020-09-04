@@ -62,7 +62,7 @@ def register():
             return jsonify(message='Missing email address'), 400
         if not password:
             return jsonify(message='Missing password'), 400
-        if not repassword or password != repassword:
+        if (not repassword) or password != repassword:
             return jsonify(message='Please re-enter password'), 400
 
         check_if_email_exists = User.query.filter_by(email=email).first()
@@ -77,8 +77,10 @@ def register():
         db.session.add(new_user)
         db.session.commit()
 
+        just_created_user = User.query.filter_by(email=email).first()
+
         access_token = create_access_token(identity={'email': email})
-        return jsonify(message='New User Created', email=email, access_token=access_token), 200
+        return jsonify(message='New User Created', access_token=access_token, userId=just_created_user.id), 200
     except:
         return jsonify(message='Error when registering'), 400
 
@@ -102,7 +104,7 @@ def login():
 
         if bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
             access_token = create_access_token(identity={'email': email})
-            return jsonify(access_token=access_token), 200
+            return jsonify(access_token=access_token, userId=user.id), 200
         else:
             return jsonify(message='Invalid Email and Password'), 400
     except Exception as e:
