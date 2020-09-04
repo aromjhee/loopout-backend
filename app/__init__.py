@@ -62,8 +62,10 @@ def register():
             return jsonify(message='Missing email address'), 400
         if not password:
             return jsonify(message='Missing password'), 400
-        if (not repassword) or password != repassword:
+        if not repassword:
             return jsonify(message='Please re-enter password'), 400
+        elif password != repassword:
+            return jsonify(message='Please confirm password'), 400
 
         check_if_email_exists = User.query.filter_by(email=email).first()
         if check_if_email_exists:
