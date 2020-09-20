@@ -24,7 +24,7 @@ jwt = JWTManager(app)
 @app.route('/<int:id>')
 def index(id):
     """ get all session """
-    sessions = Session.query.filter_by(user_id=id).all()
+    sessions = Session.query.filter_by(user_id=id).order_by(Session.id).all()
     data = [session.to_dictionary() for session in sessions]
     return {'sessions': data}
 
